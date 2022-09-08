@@ -73,11 +73,34 @@ WSGI_APPLICATION = 'bancoProj.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+"""
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bancoG1',
+        'USER': 'root',
+        'PASSWORD': 'green',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dbsdul3de37m3m',
+        'USER': 'hwgnyafbvdvguu',
+        'PASSWORD': 'c663ed81d1baa9c3d0933f00820b8c9ae316ae1ecfad8d2d07e3465c83a23879',
+        'HOST': 'ec2-44-210-36-247.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 

@@ -8,4 +8,7 @@ urlpatterns = [
     path('read/<int:id>', views.getOneCustomer, name='getOneCustomer'),
     path('update/<int:id>', views.updateCustomer, name='updateCustomer'),
     path('delete/<int:id>', views.deleteCustomer, name='deleteCustomer'),
+    path('account/new', views.newAccount, name='newAccount'),
+    path('account/update/<int:id>', views.updateAccount, name='updateAccount'),
+    path('account/delete/<int:id>', views.deleteAccount, name='deleteAccount'),
 ]
