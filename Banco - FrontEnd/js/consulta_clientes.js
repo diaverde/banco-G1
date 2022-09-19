@@ -1,4 +1,5 @@
-const getCustomersUrl = 'https://mintic-banco-unal.herokuapp.com/customers/';
+const getCustomersUrl = 'https://mintic-bancoproj-g1.herokuapp.com/read';
+//const getCustomersUrl = ' http://127.0.0.1:8000/read';
 
 let customers = [];
 
