@@ -2,7 +2,7 @@
 const newCustomerUrl = ' http://127.0.0.1:8000/new';
 
 function validar_nombre_apellido(val) {
-    const letters = /^[A-Z a-z]+$/;
+    const letters = /^[A-Z a-zÁÉÍÓÚáéíóúñ]+$/;
     if (val.match(letters))
         return true;
     else
@@ -82,7 +82,7 @@ function sendData(data) {
             if (response.ok) {
                 return response.text()
             } else {
-                throw response.text()
+                throw new Error(response.status)
             }
         })
         .then(data => {

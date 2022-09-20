@@ -11,17 +11,23 @@
 <body>
 
     <header>
-        <h1>Banco UN</h1>
+        <h1><a href="#">Banco UN</a></h1>
         <nav>
             <a href="login.html"><button>Iniciar Sesión</button></a>
             <a href="registro.html"><button>Registrarse</button></a>
         </nav>
     </header>
-
-    <div class="main-component">
-        <h2>Listado de clientes</h2>
-        <div id="info-customers">
-            <div id="cargando">Cargando...</div>
+        
+    <div class="signUp_user" id="info">
+        <div class="container_signUp_user" id="formData">
+            <h2>Iniciar sesión</h2>
+            <form name="login" method="post">
+                <input type="email" name="email" placeholder="Correo electrónico">
+                <br>
+                <input type="password" name="password" placeholder="Contraseña">
+                <br>
+                <input id="enviar" type="submit" value="Ingresar">
+            </form>
         </div>
     </div>
         
@@ -29,6 +35,6 @@
         <h2>Misión TIC 2022</h2>
     </footer>
 
-    <script src="js/consulta_clientes.js"></script>
-
+    <script src="js/login.js"></script>
 </body>
+</html>
