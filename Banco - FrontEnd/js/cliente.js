@@ -6,8 +6,16 @@ function getCustomer() {
   //console.log(parsedUrl);
   const id = parsedUrl.searchParams.get("id");
   //console.log(id);
+  const accessToken = sessionStorage.getItem('accessToken')
+  const refreshToken = sessionStorage.getItem('refreshToken')
+  console.log('Acá va: ' + accessToken)
+  console.log('Acá va: ' + refreshToken)
 
-  fetch(getCustomerUrl + id)
+  fetch(getCustomerUrl + id, {
+    headers: {
+      "Authorization": "Bearer " + accessToken
+    }
+  })
     .then(response => {
       if (response.ok || response.status == 400) {
         return response.text()

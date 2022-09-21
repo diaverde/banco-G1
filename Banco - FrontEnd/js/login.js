@@ -50,6 +50,10 @@ function handleSuccess(data) {
     message.innerHTML = "Ingreso exitoso. Accediendo a su información...";
     const info = document.getElementById("info");
     info.appendChild(message);
+    console.log(data.access)
+    console.log(data.refresh)
+    sessionStorage.setItem('accessToken', data.access)
+    sessionStorage.setItem('refreshToken', data.refresh)
     window.location.href = './cliente.html?id=' + data.id;
 }
 

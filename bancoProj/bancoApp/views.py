@@ -188,7 +188,12 @@ def login(request):
             custData = {"id": customer.id}
             resp = HttpResponse()
             resp.headers['Content-Type'] = 'text/json'
-            resp.content = json.dumps(custData)
+            #resp.content = json.dumps(custData)
+            token = {
+                "access": "eyasfsafsfdsgdgdgdgdhf=",
+                "refresh": "eyasfsafsfdsgdgdgdgdhf=",
+            }
+            resp.content = json.dumps(token)
             return resp
         except:
             return HttpResponseBadRequest("Datos mal enviados")
