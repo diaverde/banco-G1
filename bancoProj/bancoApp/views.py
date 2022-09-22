@@ -1,9 +1,10 @@
 import datetime
 import json
-import re
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseServerError
-
+from django.conf import settings
+from rest_framework_simplejwt.backends import TokenBackend
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Customer, Account
 
 def home(request):
@@ -54,6 +55,16 @@ def getAllCustomers(request):
 def getOneCustomer(request, id):
     if request.method == 'GET':
         try:
+            token = request.META.get('HTTP_AUTHORIZATION')[7:]
+            tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
+            valid_data = tokenBackend.decode(token, verify=False)
+            #print(valid_data)
+            if valid_data['user_id'] != id:
+                raise Exception
+        except:
+            return HttpResponse("Credenciales inválidas. Acceso no autorizado.", status=401)
+
+        try:
             #print(request.path)
             cust = Customer.objects.filter(id = id).first()
             if (not cust):
@@ -84,16 +95,31 @@ def getOneCustomer(request, id):
 
 def updateCustomer(request, id):
     if request.method == 'PUT':
+        
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION')[7:]
+            tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
+            valid_data = tokenBackend.decode(token, verify=False)
+            #print(valid_data)
+            if valid_data['user_id'] != id:
+                raise Exception
+        except:
+            return HttpResponse("Credenciales inválidas. Acceso no autorizado.", status=401)
+
         try:
             cust = Customer.objects.filter(id = id).first()
             if (not cust):
                 return HttpResponseBadRequest("No existe un usuario con ese documento.")
 
             data = json.loads(request.body)
-            cust.firstName = data["firstName"]
-            cust.lastName = data["lastName"]
-            cust.email = data["email"]
-            cust.password = data["password"]
+            if 'firstName' in data.keys():
+                cust.firstName = data["firstName"]
+            if 'lastName' in data.keys():
+                cust.lastName = data["lastName"]
+            if 'email' in data.keys():
+                cust.email = data["email"]
+            if 'password' in data.keys():
+                cust.password = data["password"]
             cust.save()
             return HttpResponse("Cliente actualizado")
         except:
@@ -199,3 +225,13 @@ def login(request):
             return HttpResponseBadRequest("Datos mal enviados")
     else:
         return HttpResponseNotAllowed(["POST"], "Método inválido")
+
+# Nuevas clases heredadas para mejorar token a entregar
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super(MyTokenObtainPairSerializer, self).validate(attrs)
+        data.update({'id': self.user.id})
+        return data
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

@@ -36,7 +36,7 @@ class Customer(AbstractBaseUser, PermissionsMixin):
         #print(self.password)
         super().save(**kwargs)
 
-    objects: UserManager()
+    objects = UserManager()
     USERNAME_FIELD = 'email'
 
 """
