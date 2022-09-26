@@ -110,6 +110,7 @@ DATABASES = {
         'PASSWORD': 'c663ed81d1baa9c3d0933f00820b8c9ae316ae1ecfad8d2d07e3465c83a23879',
         'HOST': 'ec2-44-210-36-247.compute-1.amazonaws.com',
         'PORT': '5432',
+        'TEST': {'MIRROR': 'default',},
     }
 }
 
@@ -170,7 +171,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
 SIMPLE_JWT = {
@@ -185,5 +187,5 @@ SIMPLE_JWT = {
 }
 
 ## Para Heroku
-import django_heroku
-django_heroku.settings(locals(), staticfiles=False)
+#import django_heroku
+#django_heroku.settings(locals(), staticfiles=False)
