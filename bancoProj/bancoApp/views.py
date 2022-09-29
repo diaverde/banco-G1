@@ -93,6 +93,37 @@ def getOneCustomer(request, id):
     else:
         return HttpResponseNotAllowed(['GET'], "Método inválido")
 
+def getOneCustomerNoToken(request, id):
+    if request.method == 'GET':
+        try:
+            #print(request.path)
+            cust = Customer.objects.filter(id = id).first()
+            if (not cust):
+                return HttpResponseBadRequest("No existe un usuario con ese documento.")
+
+            accounts = Account.objects.filter(user = id)
+            accountsData = []
+            for acc in accounts:
+                data = {"number": acc.number, "balance": float(acc.balance)}
+                accountsData.append(data)
+
+            #print(customer)
+            data = {
+                "id": cust.id,
+                "firstName": cust.firstName,
+                "lastName": cust.lastName,
+                "email": cust.email,
+                "accounts": accountsData
+            }
+            resp = HttpResponse()
+            resp.headers['Content-Type'] = "text/json"
+            resp.content = json.dumps(data)
+            return resp
+        except:
+            return HttpResponseServerError("Error de servidor")
+    else:
+        return HttpResponseNotAllowed(['GET'], "Método inválido")
+
 def updateCustomer(request, id):
     if request.method == 'PUT':
         
@@ -106,6 +137,30 @@ def updateCustomer(request, id):
         except:
             return HttpResponse("Credenciales inválidas. Acceso no autorizado.", status=401)
 
+        try:
+            cust = Customer.objects.filter(id = id).first()
+            if (not cust):
+                return HttpResponseBadRequest("No existe un usuario con ese documento.")
+
+            data = json.loads(request.body)
+            if 'firstName' in data.keys():
+                cust.firstName = data["firstName"]
+            if 'lastName' in data.keys():
+                cust.lastName = data["lastName"]
+            if 'email' in data.keys():
+                cust.email = data["email"]
+            if 'password' in data.keys():
+                cust.password = data["password"]
+            cust.save()
+            return HttpResponse("Cliente actualizado")
+        except:
+            return HttpResponseBadRequest("Error en los datos recibidos")
+    else:
+        return HttpResponseNotAllowed(['PUT'], "Método inválido")
+
+def updateCustomerNoToken(request, id):
+    if request.method == 'PUT':
+        
         try:
             cust = Customer.objects.filter(id = id).first()
             if (not cust):
